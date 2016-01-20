@@ -1,0 +1,72 @@
+CREATE DATABASE movie;
+\c movie
+
+
+CREATE TABLE movie (
+movie_id INT PRIMARY KEY,
+movie_name text NOT NULL UNIQUE,
+CHECK(movie_id>0)
+);
+
+
+CREATE TABLE Human (
+Human_id INT PRIMARY KEY,
+Human_first_name text NOT NULL,
+Human_last_name text NOT NULL,
+CHECK(Human_id>0)
+);
+
+CREATE TABLE Human_movie (
+Human_movie INT PRIMARY KEY,
+Human_id INT REFERENCES Human(Human_id),
+movie_id INT REFERENCES movie (movie_id),
+UNIQUE(Human_id,movie_id)
+);
+
+CREATE TABLE country (
+country_id INT PRIMARY KEY,
+country_name text NOT NULL UNIQUE,
+CHECK(country_id>0)
+);
+
+CREATE TABLE company (
+company_id INT PRIMARY KEY,
+company_name text NOT NULL UNIQUE,
+Human_id INT CHECK(Human_id>0) UNIQUE,
+country_id INT CHECK(country_id>0) UNIQUE,
+FOREIGN KEY (Human_id) REFERENCES Human(Human_id)
+ON DELETE SET NULL
+ON UPDATE CASCADE,
+FOREIGN KEY (country_id) REFERENCES country(country_id)
+ON DELETE SET NULL
+ON UPDATE CASCADE
+);
+
+
+INSERT INTO Human VALUES
+(1,'Nensy','Vatrosen'),
+(2,'Ted','Marson'),
+(3,'Megan','Li'),
+(4,'Lawnister','Chao');
+
+INSERT INTO movie VALUES
+(1,'Shawn'),
+(2,'Super-man'),
+(3,'Terminator'),
+(4,'matrix');
+
+INSERT INTO country VALUES
+(1,'US'),
+(2,'France');
+
+INSERT INTO Human_movie VALUES
+(1,4),
+(2,1),
+(3,3);
+
+INSERT INTO company VALUES
+(1,'Universal',2,1),
+(2,'20_fox',1,2);
+
+
+
